@@ -25,7 +25,7 @@ type Output = Void
 
 timer :: forall m. MonadAff m => Component HTML Query Input Output m
 timer = Hooks.component \{ queryToken } _ -> Hooks.do
-  -- Declare a new state variable, which we'll call "count"
+
   seconds /\ secondsId <- Hooks.useState 0
   enabled /\ enabledId <- Hooks.useState false
 
