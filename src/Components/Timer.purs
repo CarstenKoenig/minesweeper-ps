@@ -5,14 +5,12 @@ import Prelude
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
 import Effect.Aff.Class (class MonadAff)
-import Effect.Timer (clearInterval, setInterval)
 import Halogen (ClassName(..), Component)
 import Halogen.HTML (HTML)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Halogen.Hooks (HookM)
 import Halogen.Hooks as Hooks
-import Halogen.Query.EventSource (EventSource, Finalizer(..), effectEventSource, emit)
+import Utils.EventSource (interval)
 import Utils.String (padWithZeroes)
 
 data Query a 
@@ -54,7 +52,7 @@ timer = Hooks.component \{ queryToken } _ -> Hooks.do
   where
   -- subscribes to a one-second timer, updating the state on every tick
   subscribeToInterval enabledId modifySeconds =
-    Hooks.subscribe (intervalES 1000 addSecond)
+    Hooks.subscribe (interval 1000 $> addSecond)
     where 
     addSecond = do
       isEnabled <- Hooks.get enabledId
@@ -62,11 +60,3 @@ timer = Hooks.component \{ queryToken } _ -> Hooks.do
         modifySeconds (_ + 1)
       else
         pure unit
-
-
--- a very simple event-source emitting a unit-action after every 'interval_ms'
-intervalES :: forall m. MonadAff m => Int -> HookM m Unit ->  EventSource m (HookM m Unit)
-intervalES interval_ms action =
-  effectEventSource \emitter -> do
-    intervalId <- setInterval interval_ms (emit emitter action)
-    pure $ Finalizer (clearInterval intervalId)
