@@ -1,0 +1,26 @@
+{
+  "name": "minesweeper-ps",
+  "version": "1.0.0",
+  "description": "Minesweeper in Purescript / Halogen",
+  "main": "index.js",
+  "directories": {},
+  "scripts": {
+    "start": "spago build && parcel src/index.html"
+  },
+  "keywords": [
+    "purescript",
+    "minesweeper",
+    "game",
+    "halogen"
+  ],
+  "author": "Carsten Koenig",
+  "license": "ISC",
+  "devDependencies": {
+    "purescript": "^0.13.8",
+    "sass": "^1.26.10",
+    "spago": "^0.15.3"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
